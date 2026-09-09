@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Borongan AI Lab — Teacher Helper Prototype v4</title>
+<meta name="description" content="A simple, fun, bilingual teacher helper for Borongan educators.">
+<style>
+:root {
+  --navy:#08295c; --blue:#0d6efd; --sky:#eaf7ff; --orange:#ff7a00; --yellow:#ffd84d;
+  --teal:#20b8a6; --green:#2fa95a; --pink:#ff4f8b; --purple:#7657e8;
+  --ink:#17304f; --muted:#63768d; --bg:#f7fbff; --line:#d8e7f6; --white:#fff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:ui-rounded,"Nunito","Trebuchet MS",system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+button,input{font:inherit}
+button{cursor:pointer}
+a{color:var(--blue)}
+.wrap{max-width:1160px;margin:auto;padding:0 18px}
+.proto{background:#fff0d6;color:#714000;text-align:center;padding:8px 14px;font-size:12px;font-weight:900;border-bottom:1px solid #f1d59f}
+.proto b{color:#b85300}
+header{background:linear-gradient(135deg,#e9f7ff 0%,#fff8dd 56%,#e9fff8 100%);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0}
+.brand{display:flex;align-items:center;gap:10px;font-weight:1000;font-size:20px;color:var(--navy)}
+.logo{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(#ffd44b,#ff8a00);font-size:26px;box-shadow:0 8px 20px #ff8a0030}
+.navlinks{display:flex;gap:5px;flex-wrap:wrap}
+.navlinks button,.langbtn{border:0;background:transparent;color:var(--navy);font-weight:900;padding:9px 11px;border-radius:999px}
+.navlinks button:hover{background:white}
+.langswitch{display:flex;gap:4px;background:white;border:1px solid var(--line);border-radius:999px;padding:4px;box-shadow:0 5px 14px #154c7d12}
+.langbtn{background:transparent;color:var(--navy);padding:8px 10px}
+.langbtn.on{background:var(--navy);color:white}
+@media(max-width:720px){.langswitch{margin-left:auto}.langbtn{font-size:11px;padding:7px 8px}}
+.hero{display:grid;grid-template-columns:1.12fr .88fr;gap:25px;align-items:center;padding:45px 0 40px}
+.kicker{display:inline-flex;align-items:center;gap:7px;background:white;border:1px solid #cfe5f8;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:1000;color:var(--navy)}
+h1{font-size:clamp(43px,7vw,78px);line-height:.96;margin:15px 0 12px;letter-spacing:-.05em;color:var(--navy)}
+h1 .orange{color:var(--orange)}
+.hero p{font-size:19px;max-width:690px;margin:0 0 14px}
+.waray{color:#405d80;font-weight:800}
+.draft{display:inline-block;background:#fff7ce;color:#6c5900;border-radius:999px;padding:3px 7px;font-size:10px;font-weight:1000;margin-left:4px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+.btn{border:0;border-radius:14px;padding:13px 17px;font-weight:1000;background:var(--orange);color:white;box-shadow:0 8px 18px #ff7a0030}
+.btn.blue{background:var(--blue);box-shadow:0 8px 18px #0d6efd25}
+.btn.light{background:white;color:var(--navy);border:1px solid var(--line);box-shadow:none}
+.hero-art{position:relative;min-height:360px;border-radius:28px;background:linear-gradient(160deg,#c7ecff,#ffffff 44%,#fff4c3);border:1px solid #cfe5f8;overflow:hidden;box-shadow:0 25px 60px #154c7d18}
+.sun{position:absolute;width:110px;height:110px;border-radius:50%;background:#ffd94d;top:22px;right:30px;box-shadow:0 0 0 15px #ffd94d24}
+.cloud{position:absolute;background:white;border-radius:999px;height:34px;width:120px;top:75px;left:26px;box-shadow:65px 20px 0 -8px white}
+.sea{position:absolute;left:0;right:0;bottom:0;height:105px;background:linear-gradient(#40b6e8,#0877bd)}
+.hill{position:absolute;bottom:88px;right:-30px;width:330px;height:160px;background:#39a66e;border-radius:60% 0 0 0;transform:skewX(-12deg)}
+.teacher{position:absolute;left:38px;bottom:78px;font-size:135px;filter:drop-shadow(0 10px 4px #0002)}
+.robot{position:absolute;right:42px;bottom:68px;font-size:118px;filter:drop-shadow(0 10px 4px #0002)}
+.bubble{position:absolute;left:150px;top:34px;background:white;border-radius:18px;padding:12px 14px;font-weight:1000;box-shadow:0 8px 22px #154c7d18;transform:rotate(-3deg);max-width:185px}
+.sticky{position:absolute;right:30px;top:122px;background:#ffe76c;padding:12px 14px;font-weight:1000;transform:rotate(3deg);box-shadow:0 8px 20px #6a570020}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:26px 0}
+.benefit{background:white;border:1px solid var(--line);border-radius:16px;padding:13px;display:flex;gap:10px;align-items:center;font-weight:900}
+.benefit span{font-size:26px}
+main{padding:28px 0 70px}
+.big-question{text-align:center;margin:14px 0 24px}
+.big-question h2{font-size:clamp(31px,5vw,48px);line-height:1.06;margin:0;color:var(--navy)}
+.big-question p{font-size:19px;margin:7px 0}
+.quickgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.quick{border:0;border-radius:22px;padding:18px 13px;min-height:205px;text-align:center;color:var(--navy);transition:.18s;box-shadow:0 8px 18px #1649780b}
+.quick:hover{transform:translateY(-4px);box-shadow:0 16px 28px #1649781b}
+.quick .emoji{font-size:47px;display:block;margin-bottom:8px}
+.quick b{font-size:17px;display:block;line-height:1.12}
+.quick small{display:block;margin-top:7px;font-weight:800;line-height:1.25}
+.q1{background:#dff4ff} .q2{background:#e4fae9} .q3{background:#fff0e6} .q4{background:#eee9ff} .q5{background:#fff7c9} .q6{background:#ffe7f0}
+.searchbar{display:grid;grid-template-columns:1fr auto;gap:9px;margin:24px 0 8px}
+.searchbar input{width:100%;border:2px solid #cfe1f4;border-radius:16px;padding:14px 16px;font-size:16px;background:white;outline:none}
+.searchbar input:focus{border-color:var(--blue)}
+.helper{font-size:12px;color:var(--muted);margin:0 0 20px}
+.panel{background:white;border:1px solid var(--line);border-radius:22px;padding:22px;margin:22px 0;box-shadow:0 9px 22px #1649780b}
+.panel h2{font-size:30px;margin:0 0 6px;color:var(--navy)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.step{border-radius:16px;padding:17px;background:#f7fbff;border:1px solid var(--line)}
+.step .num{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:white;font-weight:1000;margin-bottom:8px}
+.step b{display:block;font-size:16px}
+.video-card{display:grid;grid-template-columns:.8fr 1.2fr;gap:18px;align-items:center}
+.fakevideo{min-height:260px;border-radius:22px;background:linear-gradient(135deg,#0b4a82,#0d78c5 55%,#45bee8);display:grid;place-items:center;position:relative;overflow:hidden;color:white}
+.fakevideo:before{content:"";position:absolute;width:160px;height:160px;border-radius:50%;background:#ffd84d;right:-35px;top:-35px;opacity:.9}
+.play{width:80px;height:80px;border-radius:50%;border:6px solid white;background:#ff7a00;color:white;font-size:30px;display:grid;place-items:center;z-index:2}
+.fakevideo .caption{position:absolute;left:18px;right:18px;bottom:16px;font-weight:1000;font-size:20px;z-index:2}
+.video-note{background:#fff6cd;border-radius:14px;padding:10px 12px;font-size:13px;margin-top:10px}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin:15px 0}
+.chip{border:1px solid var(--line);background:white;border-radius:999px;padding:8px 11px;font-size:12px;font-weight:900;color:var(--navy)}
+.chip.on{background:var(--navy);color:white}
+.count{font-weight:1000;color:var(--blue)}
+.cases{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.case{background:white;border:1px solid var(--line);border-radius:18px;padding:17px;position:relative}
+.case .cat{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:1000;color:var(--blue)}
+.case h3{margin:5px 0 7px;font-size:19px;color:var(--navy)}
+.case p{margin:0;color:var(--muted);font-size:14px}
+.case details{margin-top:10px}
+.case summary{cursor:pointer;font-weight:1000;color:var(--blue)}
+.box{margin-top:9px;border-radius:12px;padding:11px;font-size:13px}
+.prompt{background:#edf6ff;border-left:4px solid var(--blue)}
+.check{background:#fff7d8;border-left:4px solid var(--orange)}
+.refs{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.ref{border:0;background:#edf1f5;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:900;color:#395068}
+.idea-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.idea{background:linear-gradient(150deg,#fff,#f0f8ff);border:1px solid var(--line);border-radius:18px;padding:18px}
+.idea .bigemoji{font-size:38px}
+.idea h3{margin:8px 0 5px;color:var(--navy)}
+.rule{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.rule div{padding:15px;border-radius:16px;background:#f4f9ff;border:1px solid var(--line);font-weight:900;text-align:center}
+.visual-poster{width:100%;border-radius:22px;border:1px solid var(--line);box-shadow:0 12px 30px #0b376112;display:block}
+.sources .source{border:1px solid var(--line);border-radius:15px;padding:15px;margin:10px 0;background:white}
+.sources .source b{display:block;color:var(--navy)}
+.sources .source p{margin:5px 0;color:var(--muted);font-size:13px}
+.language-box{background:#fffbea;border:1px solid #f0d672;border-radius:18px;padding:18px;margin-top:18px}
+footer{background:var(--navy);color:#dcecff;padding:28px 0;font-size:13px}
+footer b{color:white}
+.section{display:none}
+.section.active{display:block}
+.waray-line{display:block;color:#496582;font-size:.93em;font-weight:800;margin-top:3px}
+body.english-only .waray-line, body.english-only .waray-only, body.english-only .waray, body.english-only .draft{display:none!important}
+.wizard-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.field label{font-weight:1000;color:var(--navy);font-size:13px}.field input,.field select,.field textarea{width:100%;border:2px solid #d8e7f6;border-radius:13px;padding:11px 12px;background:white;color:var(--ink);font:inherit}.field textarea{min-height:90px;resize:vertical}.wizard-note{background:#fff7d8;border-left:4px solid var(--orange);padding:11px 12px;border-radius:10px;font-size:13px}.result-prompt{white-space:pre-wrap;background:#edf6ff;border:2px solid #cfe1f4;border-radius:14px;padding:14px;margin:12px 0;font-size:14px}.mini-steps{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.mini-step{background:#f4f9ff;border:1px solid var(--line);border-radius:999px;padding:6px 9px;font-size:11px;font-weight:900}.copy-ok{font-weight:900;color:var(--green);margin-left:8px}.quick .doit{display:inline-block;margin-top:10px;background:#fff;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:1000;color:var(--navy)}
+@media(max-width:960px){.quickgrid{grid-template-columns:repeat(3,1fr)}.cases{grid-template-columns:1fr 1fr}.hero{grid-template-columns:1fr}.hero-art{min-height:320px}.strip{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){.navlinks{display:none}.video-card{grid-template-columns:1fr}.steps,.rule{grid-template-columns:1fr 1fr}.idea-grid{grid-template-columns:1fr}}
+@media(max-width:540px){.wizard-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.quickgrid{grid-template-columns:1fr 1fr}.cases{grid-template-columns:1fr}.strip{grid-template-columns:1fr}.steps,.rule{grid-template-columns:1fr}.searchbar{grid-template-columns:1fr}.teacher{font-size:105px;left:10px}.robot{font-size:90px;right:12px}.bubble{left:95px;top:24px;font-size:13px;max-width:150px}.sticky{right:8px;top:128px;font-size:12px}}
+</style>
+</head>
+<body>
+<div class="proto"><b>FUN PROTOTYPE FOR TEACHER FEEDBACK</b> · Not an official DepEd website · No student names, grades, medical details, or private personnel data</div>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand"><div class="logo">☀️</div><div>BORONGAN <span style="color:var(--orange)">AI LAB</span><small style="display:block;font-size:10px;letter-spacing:.08em">TEACH · TRY · CHECK · SHARE</small></div></div>
+    <div class="navlinks">
+      <button onclick="go('home')">🏠 Home</button>
+      <button onclick="go('library')">💡 Teacher Ideas</button>
+      <button onclick="go('idea')">🤝 Idea Lab</button>
+      <button onclick="go('safe')">❤️ AI + Teacher</button>
+      <button onclick="go('sources')">🔗 Sources</button>
+    </div>
+    <div class="langswitch" role="group" aria-label="Language display">
+      <button id="langBoth" class="langbtn on" onclick="setLanguage('both')" aria-pressed="true">EN + WARAY</button>
+      <button id="langEnglish" class="langbtn" onclick="setLanguage('english')" aria-pressed="false">ENGLISH ONLY</button>
+    </div>
+  </div>
+
+  <div class="wrap hero">
+    <div>
+      <span class="kicker">🎒 SIMPLE AI FOR REAL TEACHER WORK</span>
+      <h1>Ma'am, Sir...<br><span class="orange">kulang ang 24 hours?</span> 😄</h1>
+      <p>Lesson plan? Quiz? Report? Long DepEd memo? <b>Bring us the headache.</b> We will see where AI can help.</p>
+      <p class="waray-line">Ano an makuri nga trabaho mo yana? Pili la. Click. Try naton! <span class="draft">Waray draft · teachers will help us improve it</span></p>
+      <div class="actions">
+        <button class="btn" onclick="document.getElementById('quick').scrollIntoView()">👇 Pick my teacher headache</button>
+        <button class="btn blue" onclick="go('library')">💡 Show me teacher ideas</button>
+      </div>
+    </div>
+    <div class="hero-art" aria-label="Fun illustration of a teacher and AI helper">
+      <div class="sun"></div><div class="cloud"></div><div class="hill"></div><div class="sea"></div>
+      <div class="teacher">👩‍🏫</div><div class="robot">🤖</div>
+      <div class="bubble">“AI, can you help me save time?”</div>
+      <div class="sticky">AI helps.<br>Teacher checks.<br><b>Teacher decides. ❤️</b></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+<section id="home" class="section active">
+  <div class="strip">
+    <div class="benefit"><span>⏰</span><div>Save time<span class="waray-line">Mas damu nga oras</span></div></div>
+    <div class="benefit"><span>💡</span><div>Get ideas<span class="waray-line">Mas damu nga ideya</span></div></div>
+    <div class="benefit"><span>🔎</span><div>Check the facts<span class="waray-line">Siguraduhon nga tama</span></div></div>
+    <div class="benefit"><span>❤️</span><div>You are still the teacher<span class="waray-line">Ikaw gihapon an nagdidesisyon</span></div></div>
+  </div>
+
+  <div id="quick" class="big-question">
+    <h2>What is your teacher headache today?</h2>
+    <p class="waray-line">Ano an makuri nga trabaho mo yana?</p>
+  </div>
+
+  <div class="quickgrid">
+    <button class="quick q1" onclick="openHelper('lesson')"><span class="emoji">📝</span><b>Make My Lesson</b><small class="waray-line">Buligi ako paghimo hin lesson</small><span class="doit">Tap to build it →</span></button>
+    <button class="quick q2" onclick="openHelper('quiz')"><span class="emoji">✅</span><b>Make My Quiz</b><small class="waray-line">Buligi ako paghimo hin quiz</small><span class="doit">Tap to build it →</span></button>
+    <button class="quick q3" onclick="openHelper('report')"><span class="emoji">📋</span><b>Help With My Report</b><small class="waray-line">Buligi ako han akon report</small><span class="doit">Tap to build it →</span></button>
+    <button class="quick q4" onclick="openHelper('memo')"><span class="emoji">📄</span><b>Explain This DepEd Memo</b><small class="waray-line">Ano an karuyag sidngon hini?</small><span class="doit">Tap to explain →</span></button>
+    <button class="quick q5" onclick="openHelper('truth')"><span class="emoji">🔎</span><b>Is This AI Answer True?</b><small class="waray-line">Tama ba ini?</small><span class="doit">Tap to check →</span></button>
+    <button class="quick q6" onclick="randomCase()"><span class="emoji">💡</span><b>Surprise Me</b><small class="waray-line">Tagi ako hin ideya</small><span class="doit">Pick an idea →</span></button>
+  </div>
+
+  <div class="panel" style="background:linear-gradient(135deg,#eef8ff,#fffbea);text-align:center">
+    <h2>✨ New: these buttons actually help you build the job</h2>
+    <p>Tap a teacher headache. Answer a few simple questions. The site builds a ready-to-copy AI prompt for your real work.</p>
+    <p class="waray-line">Pili hin trabaho. Baton hin pipira nga pakiana. Hihimoon naton an prompt para ha imo. <span class="draft">Waray draft</span></p>
+  </div>
+
+  <div class="searchbar">
+    <input id="homeSearch" placeholder="Try: reading, science, lesson, report, memo, rubric..." onkeydown="if(event.key==='Enter') searchFromHome()">
+    <button class="btn blue" onclick="searchFromHome()">🔎 Find ideas</button>
+  </div>
+  <p class="helper">You can search in simple English. Waray search words can be added as Borongan teachers help us improve the site.</p>
+
+  <div class="panel video-card">
+    <div class="fakevideo">
+      <button class="play" onclick="showVideoScript()" aria-label="Play 30-second welcome">▶</button>
+      <div class="caption">30-second welcome from Annabelle</div>
+    </div>
+    <div>
+      <h2>What is the Borongan AI Lab?</h2>
+      <p><b>Very simple:</b> you bring a real teacher problem. We try AI on it. Then <b>you</b> check if the answer is useful and correct.</p>
+      <p class="waray-line">An AI nabulig. An teacher nagche-check. An teacher an nagdidesisyon.</p>
+      <div class="video-note">🎥 <b>For now:</b> this button shows the 30-second script. Later we can replace it with Annabelle's real welcome video, without making the site heavy.</div>
+      <button class="btn" onclick="showVideoScript()">Read the 30-second welcome</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>How it works</h2>
+    <p>Four tiny steps. No big AI words.</p>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><b>Tell AI the job</b><span class="waray-line">Ihatag an trabaho</span></div>
+      <div class="step"><div class="num">2</div><b>AI makes a draft</b><span class="waray-line">AI naghihimo hin first draft</span></div>
+      <div class="step"><div class="num">3</div><b>You check and fix it</b><span class="waray-line">Ikaw an nagche-check ngan nag-aayos</span></div>
+      <div class="step"><div class="num">4</div><b>You decide</b><span class="waray-line">Ikaw an final nga nagdidesisyon</span></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>🌟 Try one real teacher example</h2>
+    <p><b>Grade 5 English:</b> “I need a 45-minute lesson about typhoon preparedness, but I still have papers to check.”</p>
+    <button class="btn blue" onclick="quickSearch('Build tomorrow’s lesson')">Show me how AI could help</button>
+  </div>
+
+  <div class="panel">
+    <h2>🎨 A fun visual for the project</h2>
+    <p>This is a design mood board for the Lab. The real website above stays clickable and phone-friendly.</p>
+    <img src="borongan-ai-lab-fun-visual.png" class="visual-poster" alt="Colorful Borongan AI Lab design concept">
+  </div>
+</section>
+
+<section id="library" class="section">
+  <div class="big-question" style="text-align:left">
+    <h2>65 teacher ideas. Pick one. Change it. Make it yours.</h2>
+    <p class="waray-line">Pili hin usa nga ideya. Bag-oha. Himoa para ha iyo eskwelahan.</p>
+  </div>
+  <input id="search" class="searchbar-input" style="width:100%;border:2px solid #cfe1f4;border-radius:16px;padding:14px 16px;font-size:16px" placeholder="Search: lesson, quiz, memo, reading, parent, typhoon..." oninput="render()">
+  <div class="filters" id="filters"></div>
+  <p><span class="count" id="count"></span> ideas found.</p>
+  <div class="cases" id="cases"></div>
+</section>
+
+<section id="idea" class="section">
+  <div class="big-question" style="text-align:left">
+    <h2>Teacher Idea Lab 🤝</h2>
+    <p>We are not building this <b>for</b> Borongan teachers. We are building it <b>with</b> Borongan teachers.</p>
+  </div>
+  <div class="idea-grid">
+    <div class="idea"><div class="bigemoji">😩</div><h3>1. Give us your headache</h3><p>What takes too much time every week? What makes you say, “Not again!”?</p></div>
+    <div class="idea"><div class="bigemoji">🛠️</div><h3>2. Fix our example</h3><p>Tell us what sounds wrong, too formal, too English, or not useful in your school.</p></div>
+    <div class="idea"><div class="bigemoji">🏆</div><h3>3. Share what worked</h3><p>If a prompt saves you time, help us turn it into a teacher-tested Borongan workflow.</p></div>
+  </div>
+  <div class="language-box">
+    <h3>🗣️ Help us make the Waray sound like Borongan</h3>
+    <p>Some Waray on this prototype is a <b>draft</b>. We would rather ask local teachers than pretend AI knows the best local wording.</p>
+    <p><b>September 15 challenge:</b> “Teachers, which words sound natural? Which ones would you change?”</p>
+  </div>
+</section>
+
+<section id="safe" class="section">
+  <div class="big-question" style="text-align:left">
+    <h2>AI helps. Teacher checks. Teacher decides. ❤️</h2>
+    <p>This is our simple Human Checkpoint.</p>
+  </div>
+  <div class="rule">
+    <div>🤖 AI can make a first draft</div>
+    <div>🔎 Teacher checks facts and sources</div>
+    <div>🧠 Teacher checks if it fits the learners</div>
+    <div>✅ Teacher makes the final decision</div>
+  </div>
+  <div class="panel">
+    <h2>🚫 What NOT to type into a public AI tool</h2>
+    <p>Student names. Grades. Medical or discipline information. Private personnel records. Passwords. Confidential documents.</p>
+    <p><b>For practice:</b> use public, fictional, or anonymized examples.</p>
+  </div>
+</section>
+
+<section id="sources" class="section sources">
+  <div class="big-question" style="text-align:left">
+    <h2>Where did these ideas come from?</h2>
+    <p>We show our sources so teachers can check us too. AI should not get a free pass. 😄</p>
+  </div>
+  <div id="sourceList"></div>
+</section>
+</main>
+
+<footer>
+<div class="wrap"><b>Borongan AI Lab · Interactive Teacher Helper Prototype v4</b><br>
+Built for discussion with Borongan educators. Not an official DepEd website. Waray wording is a draft until local speakers approve it. AI can help with drafts and ideas; authorized humans make meaningful decisions.</div>
+</footer>
+
+<div id="modal" style="display:none;position:fixed;inset:0;background:#061b34aa;z-index:50;padding:18px;align-items:center;justify-content:center">
+  <div style="max-width:650px;width:100%;background:white;border-radius:22px;padding:22px;max-height:85vh;overflow:auto">
+    <button onclick="closeModal()" style="float:right;border:0;background:#eef4fb;border-radius:999px;width:36px;height:36px;font-weight:1000">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+const USES=[{"cat": "Planning", "title": "Build tomorrow’s lesson", "scenario": "A Grade 5 teacher needs a 45-minute English lesson but still has papers to check.", "prompt": "Create a 45-minute Grade 5 English lesson on typhoon preparedness. Include objective, warm-up, guided practice, group activity, exit ticket, and materials. Use simple Philippine classroom examples.", "check": "Check curriculum alignment, facts, timing, and whether the activity fits your actual learners.", "src": ["DEPED-AI", "DEPED-TRAIN"]}, {"cat": "Planning", "title": "Unpack a learning competency", "scenario": "A teacher has a competency statement but wants to turn it into teachable steps.", "prompt": "Break this competency into 3–5 student-friendly learning targets. Suggest evidence that would show each target was learned. Do not change the competency.", "check": "Compare every target with the official curriculum document.", "src": ["DEPED-TRAIN"]}, {"cat": "Planning", "title": "Create a week plan", "scenario": "Monday is coming and the teacher needs a sensible sequence, not five disconnected lessons.", "prompt": "Turn this topic and competency into a five-day learning sequence. Show what students should know by Friday and how each day builds toward it.", "check": "Teacher adjusts pace for interruptions, learner needs, and actual school calendar.", "src": ["DEPED-AI"]}, {"cat": "Planning", "title": "Make a lesson more active", "scenario": "A lesson feels like too much teacher talk.", "prompt": "Here is my lesson draft. Suggest three ways to make students do more thinking, talking, creating, or practicing. Keep the same learning objective.", "check": "Reject activities that are flashy but do not help the objective.", "src": ["GOOGLE-LEARN"]}, {"cat": "Planning", "title": "Create local examples", "scenario": "A textbook example feels far from Eastern Samar learners.", "prompt": "Explain this concept using familiar community examples from a coastal Philippine city. Do not invent local statistics or events.", "check": "Teacher checks whether examples are accurate, respectful, and truly familiar to students.", "src": ["DEPED-AI"]}, {"cat": "Planning", "title": "Prepare substitute / catch-up notes", "scenario": "A teacher needs a clear plan another teacher can follow.", "prompt": "Turn my lesson notes into a one-page teaching guide with objective, materials, steps, likely student questions, and quick check for understanding.", "check": "Remove anything the substitute should not access; teacher approves instructions.", "src": ["DEPED-AI"]}, {"cat": "Different Learners", "title": "One lesson, three reading levels", "scenario": "Students understand the same topic at different reading levels.", "prompt": "Rewrite this passage in three levels: emerging reader, on-level, and advanced. Keep the same key facts and learning goal.", "check": "Compare versions to the trusted source so simplification does not change meaning.", "src": ["GOOGLE-TEACHER", "DEPED-AI"]}, {"cat": "Different Learners", "title": "Support a struggling reader", "scenario": "A learner can decode words but struggles to understand a passage.", "prompt": "Create five scaffolded questions that move from literal understanding to inference. Give hints, not the final answer first.", "check": "Teacher decides what support is appropriate for the learner.", "src": ["GOOGLE-LEARN"]}, {"cat": "Different Learners", "title": "Challenge fast finishers", "scenario": "Some students finish early and need meaningful work, not busywork.", "prompt": "Create three extension tasks for students who already mastered this lesson. Make them apply, compare, design, or explain.", "check": "Teacher checks that tasks deepen learning rather than simply add more work.", "src": ["GOOGLE-LEARN"]}, {"cat": "Different Learners", "title": "Translate teacher directions carefully", "scenario": "Some families or learners understand directions better in another language.", "prompt": "Rewrite these classroom directions in simpler English, then provide a Filipino version. Keep names, numbers, dates, and requirements unchanged.", "check": "A fluent human checks the translation before use.", "src": ["AICLASS"]}, {"cat": "Different Learners", "title": "Make a visual-learning plan", "scenario": "A concept needs a diagram or sequence rather than another paragraph.", "prompt": "Turn this concept into a simple visual organizer: title, 5 boxes, arrows, and short labels. Describe what should appear in each box.", "check": "Teacher checks scientific/historical accuracy before creating the visual.", "src": ["GOOGLE-TEACHER"]}, {"cat": "Different Learners", "title": "Accessibility check", "scenario": "A worksheet may be too dense or confusing.", "prompt": "Review this worksheet for readability, unclear instructions, unnecessary complexity, and accessibility barriers. Suggest fixes without changing the learning goal.", "check": "Teacher makes the final accessibility decisions based on actual learners.", "src": ["DEPED-AI"]}, {"cat": "Assessment", "title": "Draft a quick quiz", "scenario": "The teacher needs a five-item check before moving to the next topic.", "prompt": "Create five questions aligned to this objective: 2 recall, 2 application, 1 explanation. Include an answer key and why each item matches the objective.", "check": "Teacher verifies every answer and alignment.", "src": ["DEPED-TRAIN"]}, {"cat": "Assessment", "title": "Improve weak multiple-choice questions", "scenario": "A quiz has obvious answers or confusing distractors.", "prompt": "Review these multiple-choice items. Flag clues, ambiguity, weak distractors, more than one possible answer, and reading difficulty unrelated to the skill.", "check": "Teacher decides whether to revise or discard each item.", "src": ["DEPED-TRAIN"]}, {"cat": "Assessment", "title": "Create a rubric", "scenario": "Students are making a group presentation and need to know what good work looks like.", "prompt": "Draft a 4-level rubric for this task using these criteria. Use student-friendly descriptions and observable evidence.", "check": "Teacher checks fairness, weighting, and developmental appropriateness.", "src": ["DEPED-TRAIN"]}, {"cat": "Assessment", "title": "Exit ticket in 30 seconds", "scenario": "The teacher wants to know who understood today’s lesson.", "prompt": "Create a 3-question exit ticket: one basic check, one application, one 'what is still confusing?' question.", "check": "Teacher interprets responses; AI does not make high-stakes learner decisions.", "src": ["DEPED-AI"]}, {"cat": "Assessment", "title": "Find patterns in anonymized results", "scenario": "The class missed several items and the teacher wants to know what to reteach.", "prompt": "Using only these anonymous item totals, identify possible skill patterns and suggest reteaching questions. Do not identify or rank students.", "check": "Teacher checks whether the pattern makes instructional sense.", "src": ["DEPED-AI"]}, {"cat": "Assessment", "title": "Alternative assessment ideas", "scenario": "A written test may not be the best way to show this competency.", "prompt": "Suggest three alternative assessments for this learning goal: performance, project, oral/demo. Include what evidence the teacher should look for.", "check": "Teacher selects an assessment that follows school and DepEd requirements.", "src": ["DEPED-TRAIN"]}, {"cat": "Assessment", "title": "Feedback starter", "scenario": "Thirty essays need useful feedback, but copying the same comment helps nobody.", "prompt": "Based on this rubric and an anonymized sample, draft feedback that names one strength, one next step, and one question for reflection.", "check": "Teacher reads the actual work and owns the feedback. Never paste private student data into an unapproved tool.", "src": ["DEPED-AI"]}, {"cat": "Materials", "title": "Turn notes into a worksheet", "scenario": "A teacher has good notes but no student handout.", "prompt": "Turn these verified notes into a one-page worksheet with short explanation, guided example, practice, and reflection question.", "check": "Check every fact and answer before printing.", "src": ["DEPED-TRAIN", "AICLASS"]}, {"cat": "Materials", "title": "Create vocabulary support", "scenario": "Students meet ten unfamiliar words in a science lesson.", "prompt": "Create a vocabulary table with simple meaning, example sentence, non-example, and a quick student-friendly question for each word.", "check": "Teacher checks definitions against trusted subject sources.", "src": ["GOOGLE-TEACHER"]}, {"cat": "Materials", "title": "Build discussion questions", "scenario": "Students read the text but discussion dies after 'What happened?'", "prompt": "Create 8 discussion questions moving from understand → explain → compare → evaluate → connect. Do not answer them for students.", "check": "Teacher chooses questions appropriate for age and context.", "src": ["GOOGLE-LEARN"]}, {"cat": "Materials", "title": "Create a story starter", "scenario": "A writing class needs inspiration without AI writing the whole assignment.", "prompt": "Give five story situations set in a Philippine community. Each should include a character, problem, and choice. Stop before writing the story.", "check": "Students do the creative work; disclose AI use if required.", "src": ["AICLASS"]}, {"cat": "Materials", "title": "Presentation outline", "scenario": "A teacher needs slides but wants the lesson, not decoration, to lead.", "prompt": "Turn this verified lesson into a 10-slide outline. One idea per slide, minimal text, one check-for-understanding slide, and speaker notes.", "check": "Teacher verifies content and removes unnecessary slides.", "src": ["AICLASS"]}, {"cat": "Materials", "title": "Make examples and non-examples", "scenario": "Students memorize a definition but cannot recognize the concept.", "prompt": "Create 5 examples and 5 non-examples of this concept, then explain the difference in one sentence each.", "check": "Teacher checks edge cases and accuracy.", "src": ["GOOGLE-LEARN"]}, {"cat": "Research & Truth", "title": "Summarize a trusted source", "scenario": "A teacher has a long official memo, research paper, or curriculum document.", "prompt": "Using only this source, give me: purpose, 5 key points, actions, deadlines, and questions I should verify. Cite the section/page for each important claim.", "check": "Open the original and verify before acting.", "src": ["DEPED-AI", "GOOGLE-NLM"]}, {"cat": "Research & Truth", "title": "Compare two sources", "scenario": "Two documents seem to say different things.", "prompt": "Make a table showing where Source A and Source B agree, differ, or use different dates/definitions. Quote minimally and cite each source location.", "check": "Human decides which source has authority and whether one is newer.", "src": ["DEPED-AI"]}, {"cat": "Research & Truth", "title": "Fact-check an AI answer", "scenario": "AI gave a confident answer and the teacher is unsure.", "prompt": "List every factual claim in this answer that should be checked. For each, tell me what kind of primary source would verify it. Mark unsupported claims as unverified.", "check": "Do not treat AI confidence as evidence.", "src": ["AICLASS", "DEPED-AI"]}, {"cat": "Research & Truth", "title": "Detect possible misinformation", "scenario": "A viral post is being shared by students.", "prompt": "Analyze this public post for red flags: missing source, emotional wording, manipulated context, old information presented as new, or unverifiable claims. Do not declare it false without evidence.", "check": "Teacher/students verify with credible original sources.", "src": ["AICLASS"]}, {"cat": "Research & Truth", "title": "Research question coach", "scenario": "A student topic is too broad: 'climate change.'", "prompt": "Ask the student five questions that help narrow the topic into a researchable question. Do not choose the final question for them.", "check": "Student makes the intellectual choice and documents sources.", "src": ["GOOGLE-LEARN"]}, {"cat": "Research & Truth", "title": "Source-grounded study notebook", "scenario": "A class has approved readings and wants a study helper based only on those materials.", "prompt": "Using these approved sources, create a study guide, key terms, practice questions, and 'where in the source?' citations.", "check": "Teacher controls the source set and checks outputs.", "src": ["GOOGLE-NLM"]}, {"cat": "Student Learning", "title": "Socratic tutor, not answer machine", "scenario": "A student asks for the answer to a math problem.", "prompt": "Do not give the final answer first. Ask one question at a time, identify where my reasoning breaks, give a hint, and let me try again.", "check": "Teacher sets when AI tutoring is appropriate; students still show their own work.", "src": ["GOOGLE-LEARN", "DEPED-AI"]}, {"cat": "Student Learning", "title": "Practice oral defense", "scenario": "A student has a project and needs to explain it, not memorize a script.", "prompt": "Act as a friendly panel. Ask one question at a time about my project: purpose, evidence, method, limitations, and what I would improve.", "check": "Student answers from their own work; AI does not invent evidence.", "src": ["GOOGLE-STORIES"]}, {"cat": "Student Learning", "title": "Debate partner", "scenario": "Students need to see weaknesses in an argument.", "prompt": "Take the opposite position to my claim and ask for evidence. Point out assumptions and counterexamples, but do not write my final argument.", "check": "Student evaluates the challenge and builds their own reasoning.", "src": ["GOOGLE-STORIES"]}, {"cat": "Student Learning", "title": "Study guide from class materials", "scenario": "Students need review that stays inside what the teacher taught.", "prompt": "Using only these teacher-approved materials, create a study guide with key ideas, flashcards, and self-test questions.", "check": "Teacher checks the source set and appropriateness.", "src": ["GOOGLE-NLM"]}, {"cat": "Student Learning", "title": "Explain my mistake", "scenario": "A student got an answer wrong and wants to learn why.", "prompt": "Here is the problem, my answer, and the correct answer. Ask me to explain my thinking, identify the likely misconception, then give one similar practice problem.", "check": "Use for learning, not automatic grading or punishment.", "src": ["GOOGLE-LEARN"]}, {"cat": "Student Learning", "title": "Curiosity generator", "scenario": "A class finishes early and wants to explore the topic.", "prompt": "Give 10 'I wonder...' questions about this topic. Mix science, community, history, design, and ethics. Do not answer them.", "check": "Students choose questions and research them using real sources.", "src": ["GOOGLE-LEARN"]}, {"cat": "Teacher Admin", "title": "Turn meeting notes into actions", "scenario": "A faculty meeting ends with three pages of notes and nobody remembers who does what.", "prompt": "Using these non-confidential notes, create: decisions, action items, owner, due date, and unresolved questions. Do not invent missing owners or dates.", "check": "Participants review before the notes become official.", "src": ["DEPED-AI"]}, {"cat": "Teacher Admin", "title": "Draft a parent announcement", "scenario": "A class schedule changes and families need a clear message.", "prompt": "Draft a warm 120-word parent notice using only these confirmed facts: [facts]. Keep dates and requirements exactly as provided.", "check": "Teacher/school checks tone, translation, and official approval before sending.", "src": ["DEPED-AI"]}, {"cat": "Teacher Admin", "title": "Simplify instructions", "scenario": "Students keep asking the same question about an assignment.", "prompt": "Rewrite these instructions for a 10-year-old reading level. Keep all requirements, dates, scoring rules, and submission details unchanged.", "check": "Compare line by line so nothing required disappears.", "src": ["AICLASS"]}, {"cat": "Teacher Admin", "title": "Build a checklist from a memo", "scenario": "A public memo contains ten paragraphs but the school needs the actions.", "prompt": "Extract required actions, responsible role if explicitly stated, deadline, required document, and source section. Put 'not stated' instead of guessing.", "check": "Check against the original memo before using.", "src": ["DEPED-AI"]}, {"cat": "Teacher Admin", "title": "Create FAQ from repeated questions", "scenario": "Parents or students ask the same public-information questions.", "prompt": "Turn these approved answers into a 10-question FAQ. Use simple language and link each answer to its official source.", "check": "Do not include private cases or promise outcomes.", "src": ["DEPED-AI"]}, {"cat": "Teacher Admin", "title": "Professional email first draft", "scenario": "A teacher needs to request information from another office.", "prompt": "Draft a short respectful email asking for [specific information]. Do not invent policy, deadlines, names, or commitments.", "check": "Teacher checks facts and sends it personally.", "src": ["AICLASS"]}, {"cat": "School Leadership", "title": "Morning brief from approved reports", "scenario": "A school head has several public/approved updates and needs the important items first.", "prompt": "From these approved documents, produce: urgent today, due this week, decisions needed, items to delegate, and source links.", "check": "Leader verifies before acting; no automated final decisions.", "src": ["DEPED-AI"]}, {"cat": "School Leadership", "title": "Spot repeated operational pain points", "scenario": "Several teachers report the same bottleneck in different words.", "prompt": "Group these anonymous staff suggestions into themes. Count mentions, show representative wording, and list questions leadership should ask next. Do not infer motives.", "check": "Staff validates whether the themes reflect what they meant.", "src": ["DEPED-AI"]}, {"cat": "School Leadership", "title": "School improvement brainstorming", "scenario": "A team wants options, not an AI-made decision.", "prompt": "Given this verified problem statement and constraints, generate 10 possible interventions. For each, list benefit, cost/effort questions, risks, and evidence we would need before choosing.", "check": "School team evaluates feasibility and policy compliance.", "src": ["DEPED-AI"]}, {"cat": "School Leadership", "title": "Prepare for a meeting", "scenario": "A principal has 20 minutes to understand an issue.", "prompt": "Using these approved sources, prepare a one-page brief: situation, verified facts, unknowns, stakeholder questions, and decisions that may be needed.", "check": "Leader reviews source links and corrects gaps.", "src": ["DEPED-AI"]}, {"cat": "School Leadership", "title": "Compare versions of a policy or memo", "scenario": "A new issuance may change an older workflow.", "prompt": "Compare these two official documents by date and section. Show what appears added, removed, or changed. Do not give a legal conclusion.", "check": "Authorized school/DepEd officials interpret the effect.", "src": ["DEPED-AI"]}, {"cat": "School Leadership", "title": "Draft a survey", "scenario": "A school wants teacher feedback before designing the next AI Lab.", "prompt": "Create 8 short survey questions: current task pain points, AI confidence, tools used, privacy concerns, desired labs, and one open suggestion.", "check": "Leadership reviews wording and avoids collecting unnecessary personal data.", "src": ["AICLASS"]}, {"cat": "Collaboration", "title": "Co-design a lesson in teams", "scenario": "Three teachers teach the same competency differently.", "prompt": "Combine these three anonymized lesson ideas into a comparison table: shared goal, unique strengths, possible blend, and questions for the team. Do not pick a winner.", "check": "Teachers choose what to combine.", "src": ["GOOGLE-LEARN"]}, {"cat": "Collaboration", "title": "Peer-review prompt", "scenario": "A teacher wants colleagues to improve an AI-created resource.", "prompt": "Create a peer-review checklist: accuracy, alignment, learner fit, inclusivity, clarity, source quality, and what a human changed after AI.", "check": "Peers discuss and sign off on changes.", "src": ["DEPED-AI"]}, {"cat": "Collaboration", "title": "Idea wall summarizer", "scenario": "Twenty teachers post sticky-note ideas during the Lab.", "prompt": "Group these ideas into themes without deleting unusual ideas. Show top themes plus 'wild cards' that only one person suggested.", "check": "Teachers confirm the grouping and rescue ideas AI misunderstood.", "src": ["DEPED-AI"]}, {"cat": "Collaboration", "title": "Vote on the next AI Lab", "scenario": "Teachers have more needs than available training time.", "prompt": "Turn these teacher requests into 6 possible Lab titles. For each, state the teacher problem solved and a 60-minute hands-on outcome.", "check": "Teachers vote; AI does not choose the priority.", "src": ["AICLASS"]}, {"cat": "Collaboration", "title": "Share a winning workflow", "scenario": "One teacher discovers a prompt that saves time.", "prompt": "Turn this teacher’s workflow into a reusable recipe: problem, inputs, prompt, check steps, what failed, what improved, and when not to use it.", "check": "Original teacher reviews before sharing with colleagues.", "src": ["DEPED-AI"]}, {"cat": "Collaboration", "title": "Red-team our AI idea", "scenario": "The team is excited about an AI workflow and needs someone to find risks.", "prompt": "Act as a respectful skeptic. Ask 10 questions about privacy, accuracy, fairness, access, workload, cheating, source quality, and who approves the result.", "check": "Humans decide whether the idea is safe enough to pilot.", "src": ["DEPED-AI", "AICLASS"]}, {"cat": "Teacher Growth", "title": "Learn an AI tool by doing", "scenario": "A teacher does not want a 40-minute feature tour.", "prompt": "Teach me this tool through one real teacher task. Give me one step at a time. After each step, ask what happened before continuing.", "check": "Teacher practices on non-sensitive material first.", "src": ["AICLASS"]}, {"cat": "Teacher Growth", "title": "Prompt improvement coach", "scenario": "A teacher says, 'Make me a lesson plan,' and gets a generic result.", "prompt": "Ask me what is missing from my prompt: role, learner, goal, context, constraints, output format, and source. Then help me rewrite it.", "check": "Teacher learns why the better prompt works.", "src": ["AICLASS"]}, {"cat": "Teacher Growth", "title": "AI mistake journal", "scenario": "A teacher wants to become better at spotting AI failures.", "prompt": "Turn this failed AI output into a learning log: what I asked, what AI got wrong, why I noticed, how I verified, improved prompt, and rule for next time.", "check": "Keep examples anonymized and shareable.", "src": ["DEPED-AI", "AICLASS"]}, {"cat": "Teacher Growth", "title": "Five-minute AI challenge", "scenario": "Faculty development has only a few minutes.", "prompt": "Give us one safe 5-minute challenge using a real teacher task, followed by two questions: What did AI do well? What did the human need to fix?", "check": "Facilitator chooses an age-appropriate, non-sensitive task.", "src": ["AICLASS"]}, {"cat": "Teacher Growth", "title": "Build a personal prompt library", "scenario": "Teachers keep rewriting the same useful prompts.", "prompt": "Organize my approved prompts by task. For each, add required inputs, safe-use warning, check step, and one example.", "check": "Teacher periodically retests prompts because tools change.", "src": ["AICLASS"]}, {"cat": "Community & Resilience", "title": "Typhoon learning continuity ideas", "scenario": "Classes may be disrupted and teachers need low-bandwidth options.", "prompt": "Using this verified school contingency information, suggest learning activities that can work with paper, SMS, or intermittent internet. Do not invent emergency instructions.", "check": "School leadership checks all safety and continuity guidance against official plans.", "src": ["DEPED-AI"]}, {"cat": "Community & Resilience", "title": "Family AI literacy mini-guide", "scenario": "Parents ask what AI means for homework.", "prompt": "Draft a one-page parent guide: what generative AI is, three helpful uses, three risks, questions to ask a child, privacy reminder, and school-policy placeholder.", "check": "School reviews policy language before distribution.", "src": ["DEPED-AI", "AICLASS"]}, {"cat": "Community & Resilience", "title": "Local-history question builder", "scenario": "Students want to research Borongan stories without AI inventing history.", "prompt": "Generate interview questions for elders or local experts about a chosen topic. Separate questions from facts and do not invent names, dates, or events.", "check": "Students verify oral history with additional sources and label memories as testimony.", "src": ["DEPED-AI"]}, {"cat": "Community & Resilience", "title": "Public information explainer", "scenario": "A verified government advisory is hard for younger learners to understand.", "prompt": "Rewrite this public advisory in student-friendly language while preserving dates, numbers, agencies, and warnings exactly. Add a link to the original.", "check": "Teacher checks every safety-critical detail against the official source.", "src": ["DEPED-AI"]}, {"cat": "Community & Resilience", "title": "Student social-good challenge", "scenario": "Students have learned AI basics and want to solve a real community problem.", "prompt": "Help students define a small community problem, who is affected, what evidence they need, possible AI/non-AI solutions, risks, and a tiny prototype to test.", "check": "Students and teachers choose the problem; sensitive/high-stakes uses need qualified human oversight.", "src": ["AICLASS", "R8"]}];
+const SOURCES={"DEPED-AI": {"title": "DepEd DO 003, s. 2026", "note": "DepEd’s Foundational Guidelines say AI is an auxiliary tool for teaching, learning and assessment; human judgment remains paramount; teachers must verify accuracy and use AI in ways responsive to local context and learner readiness.", "url": "https://www.deped.gov.ph/2026/02/20/february-20-2026-do-003-s-2026-foundational-guidelines-on-artificial-intelligence-ai-in-basic-education/"}, "DEPED-TRAIN": {"title": "DepEd Advisory 059, s. 2026", "note": "The training examples include unpacking competencies, lesson starters, activities, worksheets, assessment items, rubrics, alternative assessments, privacy, academic integrity and teacher judgment.", "url": "https://www.deped.gov.ph/wp-content/uploads/A_s2026_059.pdf"}, "R8": {"title": "DepEd Region VIII RM 250, s. 2026", "note": "Project AGAP.AI is described as a regional initiative to advance AI adoption and strengthen ethical AI use in teaching and learning.", "url": "https://region8.deped.gov.ph/wp-content/uploads/2026/02/RM-No.-250-s.-2026-CLMD-ESF-22626.pdf"}, "AICLASS": {"title": "AI Class ASEAN course catalog", "note": "The public curriculum includes prompting, productivity, content creation, learning and education, misinformation, responsible AI, plagiarism/copyright, privacy and AI safety.", "url": "https://www.aiclassasean.org/courses"}, "GOOGLE-NLM": {"title": "Google for Education: NotebookLM examples", "note": "Google describes source-grounded uses such as summaries, lesson plans, study guides, discussion questions, quizzes, flashcards and audio/video learning experiences.", "url": "https://blog.google/products-and-platforms/products/education/ai-tools-education-2025/"}, "GOOGLE-TEACHER": {"title": "Google educator AI examples", "note": "Google describes adapting curricular materials for different reading levels and learning needs, plus teacher workflows for planning and content creation.", "url": "https://blog.google/products-and-platforms/products/education/teacher-ai-literacy-training/"}, "GOOGLE-LEARN": {"title": "Google learning-science approach", "note": "Google highlights active learning, healthy struggle, adapting to learners, curiosity and metacognition rather than simply giving answers.", "url": "https://blog.google/products-and-platforms/products/education/google-learnlm-gemini-generative-ai/"}, "GOOGLE-STORIES": {"title": "Google school/university examples", "note": "Published examples include using NotebookLM as a debate/thought partner to test understanding and find weaknesses in arguments.", "url": "https://blog.google/products-and-platforms/products/education/customer-stories-gemini/"}};
+const CAT_LABELS={"Planning": ["📝", "Lesson ideas", "Buligi ako paghimo hin lesson"], "Different Learners": ["👥", "Help different learners", "Buligi an iba-iba nga learners"], "Assessment": ["✅", "Quiz & assessment ideas", "Quiz ngan pag-check han learning"], "Materials": ["🎨", "Make learning materials", "Himo hin learning materials"], "Research & Truth": ["🔎", "Is AI telling the truth?", "Tama ba ini?"], "Student Learning": ["🧠", "Help students think", "Buligi an students paghunahuna"], "Teacher Admin": ["📋", "Report & school-work ideas", "Reports ngan school work"], "School Leadership": ["🏫", "Help school leaders", "Bulig para ha school leaders"], "Collaboration": ["🤝", "Build together", "Magburublig kita"], "Teacher Growth": ["🌱", "Learn AI by doing", "Mahibaro ha AI pinaagi hin actual"], "Community & Resilience": ["🌦️", "School and community", "Eskwelahan ngan komunidad"]};
+const SOURCE_SHORT={"DEPED-AI": "DepEd AI Rules 2026", "DEPED-TRAIN": "DepEd Teacher Training", "R8": "DepEd Region VIII", "AICLASS": "AI Class ASEAN", "GOOGLE-NLM": "NotebookLM", "GOOGLE-TEACHER": "Google for Teachers", "GOOGLE-LEARN": "Learning Science", "GOOGLE-STORIES": "School Examples"};
+let active='All';
+
+function go(id){
+  document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id===id));
+  window.scrollTo({top:document.querySelector('main').offsetTop-10,behavior:'smooth'});
+}
+function setLanguage(mode){
+  const englishOnly=mode==='english';
+  document.body.classList.toggle('english-only', englishOnly);
+  const both=document.getElementById('langBoth');
+  const eng=document.getElementById('langEnglish');
+  both.classList.toggle('on', !englishOnly);
+  eng.classList.toggle('on', englishOnly);
+  both.setAttribute('aria-pressed', !englishOnly ? 'true' : 'false');
+  eng.setAttribute('aria-pressed', englishOnly ? 'true' : 'false');
+}
+function quickSearch(q){
+  go('library');
+  active='All';
+  document.getElementById('search').value=q;
+  renderFilters(); render();
+}
+function searchFromHome(){
+  const q=document.getElementById('homeSearch').value.trim();
+  if(q) quickSearch(q); else randomCase();
+}
+const cats=['All',...new Set(USES.map(x=>x.cat))];
+function renderFilters(){
+  document.getElementById('filters').innerHTML=cats.map(c=>{
+    const lab=c==='All'?'✨ All ideas':((CAT_LABELS[c]?.[0]||'💡')+' '+(CAT_LABELS[c]?.[1]||c));
+    return `<button class="chip ${c===active?'on':''}" onclick="active=${JSON.stringify(c)};renderFilters();render()">${lab}</button>`;
+  }).join('');
+}
+function render(){
+  const q=(document.getElementById('search')?.value||'').toLowerCase();
+  const rows=USES.filter(x=>(active==='All'||x.cat===active)&&([x.title,x.scenario,x.prompt,x.check,x.cat].join(' ').toLowerCase().includes(q)));
+  document.getElementById('count').textContent=rows.length;
+  document.getElementById('cases').innerHTML=rows.map(x=>{
+    const icon=CAT_LABELS[x.cat]?.[0]||'💡';
+    const refs=x.src.map(s=>`<button class="ref" onclick="showSource('${s}')">${SOURCE_SHORT[s]||SOURCES[s].title}</button>`).join('');
+    return `<article class="case">
+      <div class="cat">${icon} ${CAT_LABELS[x.cat]?.[1]||x.cat}</div>
+      <h3>${x.title}</h3>
+      <p>${x.scenario}</p>
+      <details><summary>👉 Show me how</summary>
+        <div class="box prompt"><b>Ask AI:</b><br>${x.prompt}</div>
+        <div class="box check"><b>Then YOU check:</b><br>${x.check}</div>
+        <div class="refs">${refs}</div>
+      </details>
+    </article>`;
+  }).join('');
+}
+function randomCase(){
+  active='All'; go('library'); document.getElementById('search').value=''; renderFilters(); render();
+  setTimeout(()=>{const cards=document.querySelectorAll('.case'); if(cards.length) cards[Math.floor(Math.random()*cards.length)].scrollIntoView({behavior:'smooth',block:'center'})},250);
+}
+function showSource(k){
+  go('sources');
+  setTimeout(()=>document.getElementById('src-'+k)?.scrollIntoView({behavior:'smooth',block:'center'}),250);
+}
+function renderSources(){
+  document.getElementById('sourceList').innerHTML=Object.entries(SOURCES).map(([k,s])=>`<div class="source" id="src-${k}">
+    <b>${s.title}</b><p>${s.note}</p><a href="${s.url}" target="_blank" rel="noopener">Open the original source ↗</a>
+  </div>`).join('');
+}
+const HELPERS={
+  lesson:{icon:'📝',title:'Make My Lesson',intro:'Answer five tiny questions. We will turn your answers into a ready-to-copy AI instruction.',fields:[
+    ['grade','Grade / Year','text','Example: Grade 5'],['subject','Subject','text','Example: English'],['topic','Topic','text','Example: Typhoon preparedness'],['minutes','Class time','text','Example: 45 minutes'],['goal','What should students learn?','textarea','Example: Students can identify 3 ways to prepare safely for a typhoon'],['needs','Anything about your class AI should know?','textarea','Optional: mixed reading levels, limited internet, group work...']],
+    build:v=>`You are helping a Philippine teacher prepare a classroom lesson.\n\nGrade/Year: ${v.grade}\nSubject: ${v.subject}\nTopic: ${v.topic}\nTime: ${v.minutes}\nLearning goal: ${v.goal}\nClass needs: ${v.needs||'No special needs provided.'}\n\nCreate a practical lesson plan with: objective, short warm-up, teacher explanation, guided practice, student activity, quick check for understanding, exit ticket, and materials. Use simple language and locally appropriate Philippine examples. Do not invent DepEd policy or curriculum requirements. If curriculum alignment is needed, tell me what official document I should check.\n\nHUMAN CHECKPOINT: Mark any fact, safety claim, or curriculum point that the teacher should verify before using the lesson.`},
+  quiz:{icon:'✅',title:'Make My Quiz',intro:'Tell us what you are teaching. We will build a clear quiz-making instruction for AI.',fields:[
+    ['grade','Grade / Year','text','Example: Grade 6'],['subject','Subject','text','Example: Science'],['topic','Topic or learning goal','text','Example: Parts of a plant'],['count','How many questions?','number','Example: 10'],['type','Question style','select','Multiple choice|Mixed: multiple choice + short answer|Short answer|Performance / application'],['level','Difficulty','select','Easy to medium|Mixed difficulty|Mostly application']],
+    build:v=>`Create a ${v.count||'10'}-item ${v.type||'mixed'} quiz for ${v.grade} ${v.subject} on: ${v.topic}. Difficulty: ${v.level||'mixed difficulty'}. Include an answer key and a one-line reason each item matches the learning goal. Avoid trick questions and ambiguous choices.\n\nHUMAN CHECKPOINT: The teacher must verify every answer, wording, fairness, developmental appropriateness, and alignment before giving this to students.`},
+  report:{icon:'📋',title:'Help With My Report',intro:'Use public, fictional, or anonymized notes only. No student names or private personnel information.',fields:[
+    ['rtype','What kind of report?','text','Example: accomplishment report'],['audience','Who will read it?','text','Example: school head'],['purpose','What should the report show?','textarea','Example: activities completed and next steps'],['notes','Safe notes to organize','textarea','Paste only public, fictional, or anonymized notes. No names, grades, medical, discipline, or private personnel data.']],
+    build:v=>`Help me draft a ${v.rtype} for ${v.audience}. Purpose: ${v.purpose}.\n\nUse ONLY these notes:\n${v.notes}\n\nOrganize them into a clear professional draft with: short summary, key activities or findings, evidence provided in my notes, issues that still need information, and next steps. Do not invent dates, numbers, names, accomplishments, or policy. Put [VERIFY] beside anything that needs human confirmation.\n\nHUMAN CHECKPOINT: I will compare the draft with the original records and approve the final report.`},
+  memo:{icon:'📄',title:'Explain This DepEd Memo',intro:'For the demo, use a PUBLIC memo only. Do not paste confidential documents.',fields:[
+    ['memo','Public memo text, title, or key section','textarea','Paste a public section here, or type the memo title and what confuses you.'],['question','What do you want to understand?','textarea','Example: What does my school actually need to do?']],
+    build:v=>`Explain this PUBLIC DepEd memo or excerpt in very simple language for a busy teacher.\n\nMEMO / EXCERPT:\n${v.memo}\n\nMY QUESTION:\n${v.question||'What does this mean and what actions does it appear to require?'}\n\nReturn: (1) 5-sentence plain-language summary, (2) who it appears to apply to, (3) important dates/numbers exactly as written, (4) action checklist, (5) questions or unclear points to confirm with the official source. Do not invent missing policy. Quote as little as possible.\n\nHUMAN CHECKPOINT: Tell me to compare your explanation with the original official DepEd document before acting.`},
+  truth:{icon:'🔎',title:'Is This AI Answer True?',intro:'AI can sound confident even when it is wrong. This builds a fact-check instruction.',fields:[
+    ['claim','AI answer or claim to check','textarea','Paste the claim here. Do not include private information.'],['source','Official source or context, if you have one','text','Optional: DepEd order title, official website, textbook, etc.']],
+    build:v=>`Fact-check the following AI-generated claim:\n\nCLAIM:\n${v.claim}\n\nSOURCE OR CONTEXT I HAVE:\n${v.source||'None provided.'}\n\nSeparate your answer into: VERIFIED, NOT VERIFIED YET, and POSSIBLY WRONG. Prefer primary/official sources. Give the source title and direct link for each important factual claim when web access is available. If you cannot verify something, say so clearly instead of guessing.\n\nHUMAN CHECKPOINT: I will open the original sources and make the final decision.`}
+};
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function openHelper(kind){
+  const h=HELPERS[kind]; if(!h)return;
+  const fields=h.fields.map(f=>{const [id,label,type,ph]=f;let control='';
+    if(type==='textarea') control=`<textarea id="w-${id}" placeholder="${esc(ph)}"></textarea>`;
+    else if(type==='select') control=`<select id="w-${id}">${ph.split('|').map(o=>`<option>${esc(o)}</option>`).join('')}</select>`;
+    else control=`<input id="w-${id}" type="${type}" placeholder="${esc(ph)}">`;
+    return `<div class="field ${type==='textarea'?'full':''}"><label>${esc(label)}</label>${control}</div>`}).join('');
+  document.getElementById('modalContent').innerHTML=`<h2 style="color:var(--navy);margin-top:0">${h.icon} ${h.title}</h2><p>${h.intro}</p><div class="mini-steps"><span class="mini-step">1 Answer</span><span class="mini-step">2 Build prompt</span><span class="mini-step">3 Copy to AI</span><span class="mini-step">4 Teacher checks</span></div><div class="wizard-grid">${fields}</div><div class="wizard-note">❤️ <b>Human Checkpoint:</b> AI makes a first draft. The teacher checks facts, fit, and policy. The teacher decides.</div><div style="margin-top:14px"><button class="btn blue" onclick="buildHelper('${kind}')">✨ Build my AI prompt</button> <button class="btn light" onclick="showIdeaInstead('${kind}')">Show me examples instead</button></div><div id="wizardResult"></div>`;
+  document.getElementById('modal').style.display='flex';
+}
+function buildHelper(kind){
+  const h=HELPERS[kind]; const v={}; let missing=[];
+  h.fields.forEach(f=>{const el=document.getElementById('w-'+f[0]);v[f[0]]=(el?.value||'').trim()});
+  const required=kind==='lesson'?['grade','subject','topic','minutes','goal']:kind==='quiz'?['grade','subject','topic','count']:kind==='report'?['rtype','audience','purpose','notes']:kind==='memo'?['memo']:['claim'];
+  missing=required.filter(k=>!v[k]);
+  if(missing.length){document.getElementById('wizardResult').innerHTML='<p style="color:#a34b00;font-weight:900">Almost there. Please fill in the important blank boxes first. 😊</p>';return}
+  const prompt=h.build(v);
+  document.getElementById('wizardResult').innerHTML=`<h3 style="color:var(--navy);margin-bottom:5px">Your ready-to-copy prompt</h3><p style="font-size:13px;color:var(--muted)">Copy this into ChatGPT, Gemini, or another school-approved AI tool.</p><div id="builtPrompt" class="result-prompt">${esc(prompt)}</div><button class="btn" onclick="copyBuiltPrompt(this)">📋 Copy prompt</button><span id="copyStatus" class="copy-ok"></span>`;
+  document.getElementById('wizardResult').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+async function copyBuiltPrompt(btn){
+  const text=document.getElementById('builtPrompt')?.innerText||'';
+  try{await navigator.clipboard.writeText(text);document.getElementById('copyStatus').textContent='Copied! ✓'}
+  catch(e){const r=document.createRange();r.selectNodeContents(document.getElementById('builtPrompt'));const sel=window.getSelection();sel.removeAllRanges();sel.addRange(r);document.getElementById('copyStatus').textContent='Selected. Tap Copy.'}
+}
+function showIdeaInstead(kind){closeModal();const q={lesson:'lesson',quiz:'quiz',report:'report',memo:'memo',truth:'fact'}[kind]||'';quickSearch(q)}
+
+function showVideoScript(){
+  document.getElementById('modalContent').innerHTML=`<h2 style="color:var(--navy);margin-top:0">🎥 30-second welcome</h2>
+  <p><b>Hi Ma'am, Sir!</b> Kulang ba an 24 hours? 😄</p>
+  <p>Lesson plans, quizzes, reports, DepEd memos... teachers already have enough to do.</p>
+  <p>Welcome to the <b>Borongan AI Lab</b>. Bring us one real teacher headache. We will try AI on it together.</p>
+  <p>But remember: <b>AI helps. You check it. You improve it. You decide.</b></p>
+  <p>Pick something below and let's see if we can give you a little time back. ❤️</p>
+  <p style="font-size:12px;color:var(--muted)">This can later be replaced with Annabelle's actual 20–30 second video.</p>`;
+  document.getElementById('modal').style.display='flex';
+}
+function closeModal(){document.getElementById('modal').style.display='none'}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+renderFilters(); render(); renderSources();
+</script>
+</body></html>
