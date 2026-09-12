@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Borongan AI Lab — Teacher Helper Prototype v4</title>
-<meta name="description" content="A simple, fun, bilingual teacher helper for Borongan educators.">
+<title>Borongan AI Lab — Teacher Helper Prototype v5</title>
+<meta name="description" content="A human-centered, bilingual AI teacher helper for Borongan educators, welcomed by Schools Division Superintendent Edgar Tenasas.">
 <style>
 :root {
   --navy:#08295c; --blue:#0d6efd; --sky:#eaf7ff; --orange:#ff7a00; --yellow:#ffd84d;
@@ -42,15 +42,11 @@ h1 .orange{color:var(--orange)}
 .btn{border:0;border-radius:14px;padding:13px 17px;font-weight:1000;background:var(--orange);color:white;box-shadow:0 8px 18px #ff7a0030}
 .btn.blue{background:var(--blue);box-shadow:0 8px 18px #0d6efd25}
 .btn.light{background:white;color:var(--navy);border:1px solid var(--line);box-shadow:none}
-.hero-art{position:relative;min-height:360px;border-radius:28px;background:linear-gradient(160deg,#c7ecff,#ffffff 44%,#fff4c3);border:1px solid #cfe5f8;overflow:hidden;box-shadow:0 25px 60px #154c7d18}
-.sun{position:absolute;width:110px;height:110px;border-radius:50%;background:#ffd94d;top:22px;right:30px;box-shadow:0 0 0 15px #ffd94d24}
-.cloud{position:absolute;background:white;border-radius:999px;height:34px;width:120px;top:75px;left:26px;box-shadow:65px 20px 0 -8px white}
-.sea{position:absolute;left:0;right:0;bottom:0;height:105px;background:linear-gradient(#40b6e8,#0877bd)}
-.hill{position:absolute;bottom:88px;right:-30px;width:330px;height:160px;background:#39a66e;border-radius:60% 0 0 0;transform:skewX(-12deg)}
-.teacher{position:absolute;left:38px;bottom:78px;font-size:135px;filter:drop-shadow(0 10px 4px #0002)}
-.robot{position:absolute;right:42px;bottom:68px;font-size:118px;filter:drop-shadow(0 10px 4px #0002)}
-.bubble{position:absolute;left:150px;top:34px;background:white;border-radius:18px;padding:12px 14px;font-weight:1000;box-shadow:0 8px 22px #154c7d18;transform:rotate(-3deg);max-width:185px}
-.sticky{position:absolute;right:30px;top:122px;background:#ffe76c;padding:12px 14px;font-weight:1000;transform:rotate(3deg);box-shadow:0 8px 20px #6a570020}
+.hero-art{position:relative;min-height:390px;border-radius:28px;border:1px solid #cfe5f8;overflow:hidden;box-shadow:0 25px 60px #154c7d22;background:#d8edf7}
+.hero-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.hero-art:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,#08295cd9)}
+.hero-proof{position:absolute;left:22px;right:22px;bottom:20px;z-index:2;color:white;font-size:17px;font-weight:1000;text-shadow:0 2px 8px #0008}
+.hero-proof small{display:block;font-size:12px;font-weight:800;margin-top:4px;color:#e8f5ff}
 .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:26px 0}
 .benefit{background:white;border:1px solid var(--line);border-radius:16px;padding:13px;display:flex;gap:10px;align-items:center;font-weight:900}
 .benefit span{font-size:26px}
@@ -75,12 +71,15 @@ main{padding:28px 0 70px}
 .step{border-radius:16px;padding:17px;background:#f7fbff;border:1px solid var(--line)}
 .step .num{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:white;font-weight:1000;margin-bottom:8px}
 .step b{display:block;font-size:16px}
-.video-card{display:grid;grid-template-columns:.8fr 1.2fr;gap:18px;align-items:center}
-.fakevideo{min-height:260px;border-radius:22px;background:linear-gradient(135deg,#0b4a82,#0d78c5 55%,#45bee8);display:grid;place-items:center;position:relative;overflow:hidden;color:white}
-.fakevideo:before{content:"";position:absolute;width:160px;height:160px;border-radius:50%;background:#ffd84d;right:-35px;top:-35px;opacity:.9}
+.video-card{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:center;padding:0;overflow:hidden}
+.fakevideo{min-height:330px;background:linear-gradient(#08295c22,#08295cd9),url('teacher-checks-v5.png') center/cover;display:grid;place-items:center;position:relative;overflow:hidden;color:white}
 .play{width:80px;height:80px;border-radius:50%;border:6px solid white;background:#ff7a00;color:white;font-size:30px;display:grid;place-items:center;z-index:2}
 .fakevideo .caption{position:absolute;left:18px;right:18px;bottom:16px;font-weight:1000;font-size:20px;z-index:2}
+.welcome-copy{padding:24px 28px 24px 4px}
+.welcome-byline{color:var(--blue);font-size:12px;font-weight:1000;letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
 .video-note{background:#fff6cd;border-radius:14px;padding:10px 12px;font-size:13px;margin-top:10px}
+.journey{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:16px}
+.journey div{background:#f1f8ff;border:1px solid var(--line);border-radius:13px;padding:10px;font-size:12px;font-weight:900;text-align:center}
 .filters{display:flex;gap:7px;flex-wrap:wrap;margin:15px 0}
 .chip{border:1px solid var(--line);background:white;border-radius:999px;padding:8px 11px;font-size:12px;font-weight:900;color:var(--navy)}
 .chip.on{background:var(--navy);color:white}
@@ -115,9 +114,9 @@ footer b{color:white}
 .waray-line{display:block;color:#496582;font-size:.93em;font-weight:800;margin-top:3px}
 body.english-only .waray-line, body.english-only .waray-only, body.english-only .waray, body.english-only .draft{display:none!important}
 .wizard-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.field label{font-weight:1000;color:var(--navy);font-size:13px}.field input,.field select,.field textarea{width:100%;border:2px solid #d8e7f6;border-radius:13px;padding:11px 12px;background:white;color:var(--ink);font:inherit}.field textarea{min-height:90px;resize:vertical}.wizard-note{background:#fff7d8;border-left:4px solid var(--orange);padding:11px 12px;border-radius:10px;font-size:13px}.result-prompt{white-space:pre-wrap;background:#edf6ff;border:2px solid #cfe1f4;border-radius:14px;padding:14px;margin:12px 0;font-size:14px}.mini-steps{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.mini-step{background:#f4f9ff;border:1px solid var(--line);border-radius:999px;padding:6px 9px;font-size:11px;font-weight:900}.copy-ok{font-weight:900;color:var(--green);margin-left:8px}.quick .doit{display:inline-block;margin-top:10px;background:#fff;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:1000;color:var(--navy)}
-@media(max-width:960px){.quickgrid{grid-template-columns:repeat(3,1fr)}.cases{grid-template-columns:1fr 1fr}.hero{grid-template-columns:1fr}.hero-art{min-height:320px}.strip{grid-template-columns:1fr 1fr}}
-@media(max-width:720px){.navlinks{display:none}.video-card{grid-template-columns:1fr}.steps,.rule{grid-template-columns:1fr 1fr}.idea-grid{grid-template-columns:1fr}}
-@media(max-width:540px){.wizard-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.quickgrid{grid-template-columns:1fr 1fr}.cases{grid-template-columns:1fr}.strip{grid-template-columns:1fr}.steps,.rule{grid-template-columns:1fr}.searchbar{grid-template-columns:1fr}.teacher{font-size:105px;left:10px}.robot{font-size:90px;right:12px}.bubble{left:95px;top:24px;font-size:13px;max-width:150px}.sticky{right:8px;top:128px;font-size:12px}}
+@media(max-width:960px){.quickgrid{grid-template-columns:repeat(3,1fr)}.cases{grid-template-columns:1fr 1fr}.hero{grid-template-columns:1fr}.hero-art{min-height:390px}.strip{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){.navlinks{display:none}.video-card{grid-template-columns:1fr}.welcome-copy{padding:22px}.steps,.rule{grid-template-columns:1fr 1fr}.idea-grid{grid-template-columns:1fr}.journey{grid-template-columns:1fr 1fr}}
+@media(max-width:540px){.wizard-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.quickgrid{grid-template-columns:1fr 1fr}.cases{grid-template-columns:1fr}.strip{grid-template-columns:1fr}.steps,.rule{grid-template-columns:1fr}.searchbar{grid-template-columns:1fr}.hero-art{min-height:300px}.journey{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -141,20 +140,20 @@ body.english-only .waray-line, body.english-only .waray-only, body.english-only 
 
   <div class="wrap hero">
     <div>
-      <span class="kicker">🎒 SIMPLE AI FOR REAL TEACHER WORK</span>
+      <span class="kicker">SIMPLE AI FOR REAL TEACHER WORK</span>
       <h1>Ma'am, Sir...<br><span class="orange">kulang ang 24 hours?</span> 😄</h1>
       <p>Lesson plan? Quiz? Report? Long DepEd memo? <b>Bring us the headache.</b> We will see where AI can help.</p>
       <p class="waray-line">Ano an makuri nga trabaho mo yana? Pili la. Click. Try naton! <span class="draft">Waray draft · teachers will help us improve it</span></p>
       <div class="actions">
-        <button class="btn" onclick="document.getElementById('quick').scrollIntoView()">👇 Pick my teacher headache</button>
+        <button class="btn" onclick="document.getElementById('welcome').scrollIntoView()">▶ Hear Sir Edgar's welcome</button>
         <button class="btn blue" onclick="go('library')">💡 Show me teacher ideas</button>
       </div>
     </div>
-    <div class="hero-art" aria-label="Fun illustration of a teacher and AI helper">
-      <div class="sun"></div><div class="cloud"></div><div class="hill"></div><div class="sea"></div>
-      <div class="teacher">👩‍🏫</div><div class="robot">🤖</div>
-      <div class="bubble">“AI, can you help me save time?”</div>
-      <div class="sticky">AI helps.<br>Teacher checks.<br><b>Teacher decides. ❤️</b></div>
+    <div class="hero-art" aria-label="Borongan teachers collaborating during an AI learning workshop">
+      <img src="borongan-ai-lab-hero-v5.png" alt="Filipino public-school teachers collaborating with a laptop and lesson materials in a bright Eastern Samar classroom">
+      <div class="hero-proof">Built with Borongan teachers, for real teacher work.
+        <small>AI helps. Teacher checks. Teacher decides.</small>
+      </div>
     </div>
   </div>
 </header>
@@ -166,6 +165,24 @@ body.english-only .waray-line, body.english-only .waray-only, body.english-only 
     <div class="benefit"><span>💡</span><div>Get ideas<span class="waray-line">Mas damu nga ideya</span></div></div>
     <div class="benefit"><span>🔎</span><div>Check the facts<span class="waray-line">Siguraduhon nga tama</span></div></div>
     <div class="benefit"><span>❤️</span><div>You are still the teacher<span class="waray-line">Ikaw gihapon an nagdidesisyon</span></div></div>
+  </div>
+
+  <div id="welcome" class="panel video-card">
+    <div class="fakevideo">
+      <button class="play" onclick="showVideoScript()" aria-label="Open Sir Edgar Tenasas welcome script">▶</button>
+      <div class="caption">A Welcome from Sir Edgar Tenasas</div>
+    </div>
+    <div class="welcome-copy">
+      <div class="welcome-byline">Schools Division Superintendent</div>
+      <h2>Why We Are Building the Borongan AI Lab</h2>
+      <p>Sir Edgar welcomes Borongan teachers to bring one real headache, try AI together, and keep professional judgment at the center.</p>
+      <p class="waray-line">An AI nabulig. An teacher nagche-check. An teacher an nagdidesisyon.</p>
+      <div class="video-note"><b>Video placeholder:</b> the button opens Sir Edgar's short welcome script until his real 20–30 second recording is ready.</div>
+      <button class="btn" onclick="showVideoScript()">▶ Read Sir Edgar's welcome</button>
+      <div class="journey" aria-label="Borongan AI Lab learning journey">
+        <div>1 · Welcome</div><div>2 · Pick a headache</div><div>3 · AI helps</div><div>4 · Teacher checks</div><div>5 · Teacher decides</div>
+      </div>
+    </div>
   </div>
 
   <div id="quick" class="big-question">
@@ -194,20 +211,6 @@ body.english-only .waray-line, body.english-only .waray-only, body.english-only 
   </div>
   <p class="helper">You can search in simple English. Waray search words can be added as Borongan teachers help us improve the site.</p>
 
-  <div class="panel video-card">
-    <div class="fakevideo">
-      <button class="play" onclick="showVideoScript()" aria-label="Play 30-second welcome">▶</button>
-      <div class="caption">30-second welcome from Annabelle</div>
-    </div>
-    <div>
-      <h2>What is the Borongan AI Lab?</h2>
-      <p><b>Very simple:</b> you bring a real teacher problem. We try AI on it. Then <b>you</b> check if the answer is useful and correct.</p>
-      <p class="waray-line">An AI nabulig. An teacher nagche-check. An teacher an nagdidesisyon.</p>
-      <div class="video-note">🎥 <b>For now:</b> this button shows the 30-second script. Later we can replace it with Annabelle's real welcome video, without making the site heavy.</div>
-      <button class="btn" onclick="showVideoScript()">Read the 30-second welcome</button>
-    </div>
-  </div>
-
   <div class="panel">
     <h2>How it works</h2>
     <p>Four tiny steps. No big AI words.</p>
@@ -226,9 +229,9 @@ body.english-only .waray-line, body.english-only .waray-only, body.english-only 
   </div>
 
   <div class="panel">
-    <h2>🎨 A fun visual for the project</h2>
-    <p>This is a design mood board for the Lab. The real website above stays clickable and phone-friendly.</p>
-    <img src="borongan-ai-lab-fun-visual.png" class="visual-poster" alt="Colorful Borongan AI Lab design concept">
+    <h2>Teachers stay in charge</h2>
+    <p>AI can prepare a first draft. Borongan teachers check the facts, improve the fit for their learners, and make every meaningful decision.</p>
+    <img src="teacher-checks-v5.png" class="visual-poster" alt="A Filipino teacher reviewing an AI-assisted lesson draft against printed classroom materials">
   </div>
 </section>
 
@@ -288,7 +291,7 @@ body.english-only .waray-line, body.english-only .waray-only, body.english-only 
 </main>
 
 <footer>
-<div class="wrap"><b>Borongan AI Lab · Interactive Teacher Helper Prototype v4</b><br>
+<div class="wrap"><b>Borongan AI Lab · Interactive Teacher Helper Prototype v5</b><br>
 Built for discussion with Borongan educators. Not an official DepEd website. Waray wording is a draft until local speakers approve it. AI can help with drafts and ideas; authorized humans make meaningful decisions.</div>
 </footer>
 
@@ -415,13 +418,14 @@ async function copyBuiltPrompt(btn){
 function showIdeaInstead(kind){closeModal();const q={lesson:'lesson',quiz:'quiz',report:'report',memo:'memo',truth:'fact'}[kind]||'';quickSearch(q)}
 
 function showVideoScript(){
-  document.getElementById('modalContent').innerHTML=`<h2 style="color:var(--navy);margin-top:0">🎥 30-second welcome</h2>
-  <p><b>Hi Ma'am, Sir!</b> Kulang ba an 24 hours? 😄</p>
-  <p>Lesson plans, quizzes, reports, DepEd memos... teachers already have enough to do.</p>
-  <p>Welcome to the <b>Borongan AI Lab</b>. Bring us one real teacher headache. We will try AI on it together.</p>
-  <p>But remember: <b>AI helps. You check it. You improve it. You decide.</b></p>
-  <p>Pick something below and let's see if we can give you a little time back. ❤️</p>
-  <p style="font-size:12px;color:var(--muted)">This can later be replaced with Annabelle's actual 20–30 second video.</p>`;
+  document.getElementById('modalContent').innerHTML=`<h2 style="color:var(--navy);margin-top:0">A Welcome from Sir Edgar Tenasas</h2>
+  <p style="color:var(--blue);font-weight:900">Why We Are Building the Borongan AI Lab</p>
+  <p><b>Good day, Ma'am and Sir.</b></p>
+  <p>Welcome to the <b>Borongan AI Lab</b>. We are building this with you—to help with real teacher work while protecting professional judgment, privacy, and care for every learner.</p>
+  <p>Bring one real headache: a lesson, quiz, report, or DepEd memo. Let AI help create a first draft. Then check it, improve it, and decide what belongs in your classroom.</p>
+  <p><b>AI helps. The teacher checks. The teacher decides.</b></p>
+  <p>Let us learn together and shape a Lab that works for Borongan teachers.</p>
+  <p style="font-size:12px;color:var(--muted)">Placeholder script for Sir Edgar Tenasas, Schools Division Superintendent. Replace this card with his approved 20–30 second recording when available.</p>`;
   document.getElementById('modal').style.display='flex';
 }
 function closeModal(){document.getElementById('modal').style.display='none'}
